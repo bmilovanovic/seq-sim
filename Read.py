@@ -2,16 +2,14 @@ import random
 
 
 class Read:
-    def __init__(self, genome, avg_quality, coverage):
-        self.genome = genome
-        self.avg_quality = avg_quality
-        self.coverage = coverage
-        self.session_name = "ETF-SEQ-SIM"
-        self.x = random.randint(0, len(genome))
-        self.y = random.randint(0, len(genome))
+    def __init__(self, nucleotides, quality):
+        self.nucleotides = nucleotides
+        self.quality = quality
+        self.x = random.randint(0, 32000)
+        self.y = random.randint(0, 32000)
 
     def write_to_file(self, file, file_index):
-        file.write("@{}:13M111GI:2018:3255:17:{}:{} {}:N:0:1\n".format(self.session_name, self.x, self.y, file_index))
-        file.write("CNTTTTTTACTTTTTTTCCAATCAAGGTACATTCANGATCCTAATAAAATTCCANNAACACTGGACANTGATACNA\n")
+        file.write("@ETF-SEQ-SIM:13M111GI:2018:3255:17:{}:{} {}:N:0:1\n".format(self.x, self.y, file_index))
+        file.write("{}\n".format(self.nucleotides))
         file.write("+\n")
-        file.write("@#==>DA?CDHGHHHHHEHGGGGGFFHFHGDCDCA#@CCBBBB@BGFGGG;795##:011?@??@###########\n")
+        file.write("{}\n".format(self.quality))

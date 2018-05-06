@@ -11,11 +11,11 @@ if __name__ == '__main__':
     while True:
         try:
             avg_quality = int(input())
-            if avg_quality < 0 or avg_quality > 100:
+            if avg_quality < 0 or avg_quality > 128:
                 raise ValueError()
             break
         except ValueError:
-            print("Error in input. I need integer value from 0 to 100. Try again...")
+            print("Error in input. I need integer value from 0 to 128. Try again...")
 
     print("What coverage do you want?")
     while True:
