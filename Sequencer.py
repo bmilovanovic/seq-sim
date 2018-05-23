@@ -105,7 +105,11 @@ class Sequencer:
         return Read(nucleotides, qualities)
 
     def simulate(self):
-        file_src = open(self.src_file_name, "r")
+        try:
+            file_src = open(self.src_file_name, "r")
+        except FileNotFoundError:
+            print("The file {} is missing :( Exiting..".format(self.src_file_name))
+            sys.exit()
 
         genome = parse_fasta(file_src)
         genome_size = len(genome)

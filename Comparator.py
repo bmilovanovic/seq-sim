@@ -1,3 +1,5 @@
+import sys
+
 from matplotlib import pyplot
 
 
@@ -25,8 +27,12 @@ class Comparator:
         self.compared_file_name = compared_file_name
 
     def compare(self):
-        file_ref = open(self.ref_file_name, "r")
-        file_compared = open(self.compared_file_name, "r")
+        try:
+            file_ref = open(self.ref_file_name, "r")
+            file_compared = open(self.compared_file_name, "r")
+        except FileNotFoundError:
+            print("The file {} is missing :( Exiting..".format(self.compared_file_name))
+            sys.exit()
 
         ref_alignments = parse_sam(file_ref)
         compared_alignments = parse_sam(file_compared)
@@ -40,7 +46,7 @@ class Comparator:
                 large_dif_count += 1
 
         print("There were {}% differences in more than one alignment position."
-              .format(100.0 * large_dif_count/len(diffs)))
+              .format(100.0 * large_dif_count / len(diffs)))
 
         pyplot.plot(diffs)
         pyplot.legend()
