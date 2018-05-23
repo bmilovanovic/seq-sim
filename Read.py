@@ -23,4 +23,4 @@ class Read:
 
     def write_to_sam(self, file, pos, avg_quality, mate_pos, mate_distance):
         file.write(sam_format
-                   .format(self.name, pos, avg_quality, mate_pos, mate_distance, self.nucleotides, self.quality))
+                   .format(self.name[1:], pos, avg_quality, mate_pos, mate_distance, self.nucleotides, self.quality))

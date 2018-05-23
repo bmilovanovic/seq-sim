@@ -1,6 +1,20 @@
-import numpy
-from matplotlib import pyplot as plt
-from scipy import stats
+from matplotlib import pyplot
+
+
+# Read all the lines and add them to the dictionary {read_name, read_pos}
+def parse_sam(fh):
+    alignments = {}
+    for ln in fh:
+        if ln[0] == '@':
+            # Info lines produced by BWA, skip them
+            continue
+
+        parts = ln.split()
+        read_name = parts[0]
+        read_pos = parts[3]
+        alignments[read_name] = int(read_pos)
+
+    return alignments
 
 
 class Comparator:
@@ -14,19 +28,20 @@ class Comparator:
         file_ref = open(self.ref_file_name, "r")
         file_compared = open(self.compared_file_name, "r")
 
-        # Sample from a normal distribution using numpy's random number generator
-        samples = numpy.random.normal(size=10000)
+        ref_alignments = parse_sam(file_ref)
+        compared_alignments = parse_sam(file_compared)
 
-        # Compute a histogram of the sample
-        bins = numpy.linspace(-5, 5, 30)
-        histogram, bins = numpy.histogram(samples, bins=bins, normed=True)
+        large_dif_count = 0
+        diffs = []
+        for read_name, pos in compared_alignments.items():
+            ref_pos = ref_alignments.get(read_name)
+            diffs.append(ref_pos - pos)
+            if abs(ref_pos - pos) > 1:
+                large_dif_count += 1
 
-        bin_centers = 0.5 * (bins[1:] + bins[:-1])
+        print("There were {}% differences in more than one alignment position."
+              .format(100.0 * large_dif_count/len(diffs)))
 
-        # Compute the PDF on the bin centers from scipy distribution object
-        pdf = stats.norm.pdf(bin_centers)
-        plt.figure(figsize=(6, 4))
-        plt.plot(bin_centers, histogram, label="Histogram of samples")
-        plt.plot(bin_centers, pdf, label="PDF")
-        plt.legend()
-        plt.show()
+        pyplot.plot(diffs)
+        pyplot.legend()
+        pyplot.show()

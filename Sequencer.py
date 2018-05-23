@@ -13,23 +13,22 @@ bases = ('A', 'C', 'G', 'T')
 # Read all the lines. If the lines is not info/sequence name, append it to the result string.
 def parse_fasta(fh):
     fa = {}
-    current_short_name = None
-    # Part 1: compile list of lines per sequence
+    sequence_name = None
     i = 0
     for ln in fh:
-        sys.stdout.write("\r{} lines of genome file parsed".format(i))
+        sys.stdout.write("\r{} lines of the source genome file parsed".format(i))
         sys.stdout.flush()
         i += 1
         if ln[0] == '>':
             # new name line; remember current sequence's short name
-            long_name = ln[1:].rstrip()
-            current_short_name = long_name.split()[0]
-            fa[current_short_name] = []
+            sequence_row = ln[1:].rstrip()
+            sequence_name = sequence_row.split()[0]
+            fa[sequence_name] = []
         else:
-            # append nucleotides to current sequence
-            fa[current_short_name].append(ln.rstrip())
+            # append nucleotides to the current sequence
+            fa[sequence_name].append(ln.rstrip())
     print("\n")
-    # Part 2: join lists into strings
+    # Join lists into strings
     for short_name, nuc_list in fa.items():
         # join this sequence's lines into one long string
         fa[short_name] = ''.join(nuc_list)
@@ -53,7 +52,8 @@ def apply_errors(sequence):
     for i in range(0, sequence_size):
         if random.random() <= Sequencer.error_rate_snip:
             bases_without_one = list(bases)
-            bases_without_one.remove(sequence[i])
+            if sequence[i] in bases_without_one:
+                bases_without_one.remove(sequence[i])
             sequence = sequence[:i] + random.choice(bases_without_one) + sequence[i + 1:]
             continue
         if random.random() <= Sequencer.error_rate_deletion:
@@ -104,7 +104,6 @@ class Sequencer:
 
         return Read(nucleotides, qualities)
 
-    # GCF_000766835.1_Aquila_chrysaetos-1.0.2_cds_from_genomic.fa
     def simulate(self):
         file_src = open(self.src_file_name, "r")
 
@@ -118,10 +117,10 @@ class Sequencer:
         # Generate the reads and write out the files
         reads_num = int(self.coverage * genome_size / self.read_length)
         print("There are {} nucleotides in the source genome.".format(genome_size))
-        print("{} reads with length of {} should be generated to match the coverage of {}."
+        print("{} reads with the length of {} should be generated to match the coverage of {}."
               .format(reads_num, self.read_length, self.coverage))
         for i in range(0, reads_num):
-            sys.stdout.write("\r{}% reads generated".format(i / reads_num))
+            sys.stdout.write("\r{}% reads generated".format((i + 1) * 100 / reads_num))
             sys.stdout.flush()
             Read.read_index = Read.read_index + 1
 
