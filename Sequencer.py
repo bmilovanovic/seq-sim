@@ -32,7 +32,7 @@ def parse_fasta(fh):
     for short_name, nuc_list in fa.items():
         # join this sequence's lines into one long string
         fa[short_name] = ''.join(nuc_list)
-    return ''.join(fa.values())
+    return ''.join(fa.values()).upper()
 
 
 def find_closest_char(target_val, max_val, min_val):

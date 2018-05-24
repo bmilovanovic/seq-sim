@@ -49,5 +49,4 @@ class Comparator:
               .format(100.0 * large_dif_count / len(diffs)))
 
         pyplot.plot(diffs)
-        pyplot.legend()
         pyplot.show()

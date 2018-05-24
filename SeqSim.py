@@ -7,37 +7,37 @@ if __name__ == '__main__':
     print("I can create Illumina paired-end reads for you.")
     print("To do that, I need some help.\n")
 
-    # source_genome = input("What is the name of the source genomic sequence file? ")
-    #
-    # print("What is the average quality of the nucleotides?")
-    # while True:
-    #     try:
-    #         avg_quality = int(input())
-    #         if avg_quality < Sequencer.quality_min or avg_quality > Sequencer.quality_max:
-    #             raise ValueError()
-    #         break
-    #     except ValueError:
-    #         print("Error in input. I need integer value from {} to {}. Try again..."
-    #               .format(Sequencer.quality_min, Sequencer.quality_max))
-    #
-    # print("What coverage do you want?")
-    # while True:
-    #     try:
-    #         coverage = float(input())
-    #         if coverage < 0 or coverage > 2:
-    #             raise ValueError()
-    #         break
-    #     except ValueError:
-    #         print("Error in input. I need real value from 0 to 2. Try again...")
-    #
-    # print("Started sequencing with the average nucleotide quality of {} and the coverage of {}."
-    #       .format(avg_quality, coverage))
-    #
-    # my_sequencer = Sequencer(source_genome, avg_quality, coverage)
-    # my_sequencer.simulate()
-    #
-    # print("The reads are ready! Check your folder...")
-    #
+    source_genome = input("What is the name of the source genomic sequence file? ")
+
+    print("What is the average quality of the nucleotides?")
+    while True:
+        try:
+            avg_quality = int(input())
+            if avg_quality < Sequencer.quality_min or avg_quality > Sequencer.quality_max:
+                raise ValueError()
+            break
+        except ValueError:
+            print("Error in input. I need integer value from {} to {}. Try again..."
+                  .format(Sequencer.quality_min, Sequencer.quality_max))
+
+    print("What coverage do you want?")
+    while True:
+        try:
+            coverage = float(input())
+            if coverage < 0 or coverage > 2:
+                raise ValueError()
+            break
+        except ValueError:
+            print("Error in input. I need real value from 0 to 2. Try again...")
+
+    print("Started sequencing with the average nucleotide quality of {} and the coverage of {}."
+          .format(avg_quality, coverage))
+
+    my_sequencer = Sequencer(source_genome, avg_quality, coverage)
+    my_sequencer.simulate()
+
+    print("The reads are ready! Check your folder...")
+
     print("Do you want to compare produced alignment file with some other? y/n")
     while True:
         try:
