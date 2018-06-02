@@ -124,7 +124,7 @@ class Sequencer:
         print("{} reads with the length of {} should be generated to match the coverage of {}."
               .format(reads_num, self.read_length, self.coverage))
         for i in range(0, reads_num):
-            sys.stdout.write("\r{}% reads generated".format((i + 1) * 100 / reads_num))
+            sys.stdout.write("\r{}% reads generated".format(int((i + 1) * 100 / reads_num)))
             sys.stdout.flush()
             Read.read_index = Read.read_index + 1
 

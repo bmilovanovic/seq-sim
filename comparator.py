@@ -31,7 +31,7 @@ class Comparator:
             file_ref = open(self.ref_file_name, "r")
             file_compared = open(self.compared_file_name, "r")
         except FileNotFoundError:
-            print("The file {} is missing :( Exiting..".format(self.compared_file_name))
+            print("One of the alignment files are missing :( Exiting...")
             sys.exit()
 
         ref_alignments = parse_sam(file_ref)
